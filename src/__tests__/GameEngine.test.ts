@@ -4,11 +4,31 @@ import { GameEngine } from '../GameEngine';
 describe('GameEngine', () => {
   let canvas: HTMLCanvasElement;
   let engine: GameEngine;
+  let mockCtx: any;
 
   beforeEach(() => {
     canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 600;
+    
+    // Mock 2D context
+    mockCtx = {
+      fillStyle: '',
+      strokeStyle: '',
+      lineWidth: 0,
+      font: '',
+      textAlign: '',
+      fillRect: vi.fn(),
+      strokeRect: vi.fn(),
+      fillText: vi.fn(),
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      stroke: vi.fn(),
+      setLineDash: vi.fn()
+    };
+    
+    vi.spyOn(canvas, 'getContext').mockReturnValue(mockCtx);
     engine = new GameEngine(canvas);
   });
 
@@ -53,7 +73,6 @@ describe('GameEngine', () => {
   });
 
   it('should update game state', () => {
-    const initialTime = performance.now();
     engine.update(1/60);
     expect(engine).toBeDefined();
   });
