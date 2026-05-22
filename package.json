@@ -1,0 +1,40 @@
+{
+  "name": "task-159123ca-3838-4439-a294-093bd33d201d",
+  "version": "1.0.0",
+  "description": "2D browser boxing game in TypeScript with HTML5 canvas. Player boxer vs single AI opponent. Supports jab (fast/low dmg), hook (slow/high dmg/stagger), footwork (lateral move + dodge with i-frames), stamina meter, health-bar HUD, win/lose screen.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3000",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cucumber": "cucumber-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://x-access-token: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@github.com/crgarcia12/liliput-boxing-ring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crgarcia12/liliput-boxing-ring/issues"
+  },
+  "homepage": "https://github.com/crgarcia12/liliput-boxing-ring#readme",
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.9.0",
+    "@playwright/test": "^1.60.0",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^25.9.1",
+    "happy-dom": "^20.9.0",
+    "jsdom": "^29.1.1",
+    "playwright": "^1.60.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
+  }
+}
