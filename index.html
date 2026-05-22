@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxing Ring - Resource Management Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    h1 {
+      text-align: center;
+      color: #ff6b6b;
+    }
+    .fighter-panel {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .resource-bar {
+      margin: 15px 0;
+    }
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .bar-container {
+      width: 100%;
+      height: 30px;
+      background: #444;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 2px solid #555;
+    }
+    .bar-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .health-bar {
+      background: linear-gradient(90deg, #ff4444, #ff6666);
+    }
+    .stamina-bar {
+      background: linear-gradient(90deg, #44ff44, #66ff66);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background: #4a90e2;
+      color: white;
+      transition: all 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: #357abd;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 4px;
+      min-height: 50px;
+      font-family: monospace;
+    }
+    .ko {
+      color: #ff4444;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .info {
+      background: #1a3a5a;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4a90e2;
+    }
+    .action-cost {
+      font-size: 12px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>🥊 Boxing Ring - Resource Management Demo</h1>
+  
+  <div class="info">
+    <strong>Resource Management System:</strong>
+    <ul style="margin: 10px 0;">
+      <li>Stamina regenerates 20 per second</li>
+      <li>Actions are blocked when stamina is insufficient</li>
+      <li>Health does not regenerate</li>
+      <li>Fighter is knocked out when health reaches 0</li>
+    </ul>
+  </div>
+
+  <div class="fighter-panel">
+    <h2>Player Fighter</h2>
+    
+    <div class="resource-bar">
+      <div class="bar-label">
+        <span>Health</span>
+        <span id="health-value">100 / 100</span>
+      </div>
+      <div class="bar-container">
+        <div id="health-bar" class="bar-fill health-bar" style="width: 100%">100%</div>
+      </div>
+    </div>
+
+    <div class="resource-bar">
+      <div class="bar-label">
+        <span>Stamina</span>
+        <span id="stamina-value">100 / 100</span>
+      </div>
+      <div class="bar-container">
+        <div id="stamina-bar" class="bar-fill stamina-bar" style="width: 100%">100%</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="jab-btn">
+        Jab
+        <div class="action-cost">-10 stamina</div>
+      </button>
+      <button id="hook-btn">
+        Hook
+        <div class="action-cost">-25 stamina</div>
+      </button>
+      <button id="dodge-btn">
+        Dodge
+        <div class="action-cost">-20 stamina</div>
+      </button>
+      <button id="damage-btn" style="background: #e24a4a;">
+        Take Damage
+        <div class="action-cost">-15 health</div>
+      </button>
+      <button id="reset-btn" style="background: #666;">
+        Reset
+      </button>
+    </div>
+
+    <div class="status" id="status">
+      Ready to fight! Try the actions above.
+    </div>
+  </div>
+
+  <script type="module">
+    import { ResourceManager } from './ResourceManager.js';
+
+    const playerResources = new ResourceManager();
+    let lastTime = performance.now();
+    let animationId = null;
+
+    function updateUI() {
+      const health = playerResources.getHealth();
+      const maxHealth = playerResources.getMaxHealth();
+      const stamina = Math.round(playerResources.getStamina());
+      const maxStamina = playerResources.getMaxStamina();
+
+      const healthPercent = (health / maxHealth) * 100;
+      const staminaPercent = (stamina / maxStamina) * 100;
+
+      document.getElementById('health-value').textContent = `${Math.round(health)} / ${maxHealth}`;
+      document.getElementById('health-bar').style.width = `${healthPercent}%`;
+      document.getElementById('health-bar').textContent = `${Math.round(healthPercent)}%`;
+
+      document.getElementById('stamina-value').textContent = `${stamina} / ${maxStamina}`;
+      document.getElementById('stamina-bar').style.width = `${staminaPercent}%`;
+      document.getElementById('stamina-bar').textContent = `${Math.round(staminaPercent)}%`;
+
+      // Update button states
+      document.getElementById('jab-btn').disabled = !playerResources.hasEnoughStamina(10) || !playerResources.isAlive();
+      document.getElementById('hook-btn').disabled = !playerResources.hasEnoughStamina(25) || !playerResources.isAlive();
+      document.getElementById('dodge-btn').disabled = !playerResources.hasEnoughStamina(20) || !playerResources.isAlive();
+      document.getElementById('damage-btn').disabled = !playerResources.isAlive();
+
+      // Check knockout
+      if (playerResources.isKnockedOut()) {
+        document.getElementById('status').innerHTML = '<div class="ko">💀 KNOCKED OUT! 💀</div>';
+      }
+    }
+
+    function gameLoop() {
+      const currentTime = performance.now();
+      const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+      lastTime = currentTime;
+
+      playerResources.update(deltaTime);
+      updateUI();
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function showMessage(msg) {
+      if (!playerResources.isKnockedOut()) {
+        document.getElementById('status').textContent = msg;
+      }
+    }
+
+    // Action handlers
+    document.getElementById('jab-btn').addEventListener('click', () => {
+      if (playerResources.tryConsumeStamina(10)) {
+        showMessage('💥 Jab thrown! Fast and efficient.');
+        updateUI();
+      } else {
+        showMessage('❌ Not enough stamina for jab!');
+      }
+    });
+
+    document.getElementById('hook-btn').addEventListener('click', () => {
+      if (playerResources.tryConsumeStamina(25)) {
+        showMessage('💪 Hook thrown! Powerful but costly.');
+        updateUI();
+      } else {
+        showMessage('❌ Not enough stamina for hook!');
+      }
+    });
+
+    document.getElementById('dodge-btn').addEventListener('click', () => {
+      if (playerResources.tryConsumeStamina(20)) {
+        showMessage('🏃 Dodged! Quick footwork.');
+        updateUI();
+      } else {
+        showMessage('❌ Not enough stamina to dodge!');
+      }
+    });
+
+    document.getElementById('damage-btn').addEventListener('click', () => {
+      playerResources.takeDamage(15);
+      showMessage('🤕 Took 15 damage from opponent!');
+      updateUI();
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      location.reload();
+    });
+
+    // Start game loop
+    gameLoop();
+    updateUI();
+  </script>
+</body>
+</html>
