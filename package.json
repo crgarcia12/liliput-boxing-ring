@@ -1,0 +1,20 @@
+{
+  "name": "liliput-boxing-ring",
+  "version": "1.0.0",
+  "description": "2D browser boxing game in TypeScript with HTML5 canvas",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build --base=/dev/crgarcia12/liliput-boxing-ring/liliput-task-18498454/",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vitest": "^1.2.0",
+    "jsdom": "^23.2.0"
+  }
+}
