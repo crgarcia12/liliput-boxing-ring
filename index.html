@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liliput Boxing Ring</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      max-width: 900px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    #gameCanvas {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      margin: 2rem auto;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .control-group {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .control-group h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .control-group p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .status-item {
+      text-align: center;
+    }
+
+    .status-item .label {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 0.3rem;
+    }
+
+    .status-item .value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .info {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(52, 152, 219, 0.2);
+      border-left: 4px solid #3498db;
+      border-radius: 5px;
+      text-align: left;
+    }
+
+    .info h2 {
+      margin-bottom: 1rem;
+      color: #3498db;
+    }
+
+    .info ul {
+      list-style-position: inside;
+      line-height: 1.8;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(46, 204, 113, 0.3);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+      color: #2ecc71;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🥊 Liliput Boxing Ring</h1>
+    <p class="subtitle">AI Opponent Demo <span class="badge">v1.0</span></p>
+
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <div class="status">
+      <div class="status-item">
+        <div class="label">Player Health</div>
+        <div class="value" id="playerHealth">100</div>
+      </div>
+      <div class="status-item">
+        <div class="label">Player Stamina</div>
+        <div class="value" id="playerStamina">100</div>
+      </div>
+      <div class="status-item">
+        <div class="label">AI Health</div>
+        <div class="value" id="aiHealth">100</div>
+      </div>
+      <div class="status-item">
+        <div class="label">AI Stamina</div>
+        <div class="value" id="aiStamina">100</div>
+      </div>
+      <div class="status-item">
+        <div class="label">AI Action</div>
+        <div class="value" id="aiAction">IDLE</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>🥊 Attacks</h3>
+        <p><strong>J</strong> - Jab (fast/low damage)<br>
+           <strong>K</strong> - Hook (slow/high damage)</p>
+      </div>
+      <div class="control-group">
+        <h3>👟 Movement</h3>
+        <p><strong>A/D</strong> - Move left/right<br>
+           <strong>Space</strong> - Dodge (i-frames)</p>
+      </div>
+      <div class="control-group">
+        <h3>🤖 AI Features</h3>
+        <p>• Distance-based decisions<br>
+           • Stamina management<br>
+           • Attack cooldowns</p>
+      </div>
+    </div>
+
+    <div class="info">
+      <h2>🎯 AI Opponent System</h2>
+      <ul>
+        <li>Autonomous decision tree with priority-based logic</li>
+        <li>Emergency responses: dodge incoming attacks, retreat when low stamina</li>
+        <li>Offensive actions: jab at close range, hook for heavy damage</li>
+        <li>Smart positioning: maintains optimal fighting distance</li>
+        <li>Difficulty scaling: reaction times and patterns vary by level</li>
+        <li>Unpredictable: randomized circling and attack timing</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
